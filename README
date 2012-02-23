@@ -1,0 +1,3 @@
+A genealogy tree web application.
+Uses mongo database.
+Based upon RESTAS, mongo-cl-driver.
