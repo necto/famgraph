@@ -1,0 +1,181 @@
+
+.card-bg {
+	fill-opacity:1;
+	stroke:#000000;
+	stroke-width:1;
+	stroke-linecap:butt;
+	stroke-linejoin:miter;
+	stroke-miterlimit:4;
+	stroke-opacity:0.96052629;
+	stroke-dasharray:none;
+	stroke-dashoffset:0
+}
+.MALE {
+	fill: #986db6;
+}
+.FEMALE {
+	fill: #b66d98;
+}
+.card-text {
+	font-size:12px;
+	font-style:normal;
+	font-weight:normal;
+	line-height:125%;
+	letter-spacing:0px;
+	word-spacing:0px;
+	fill:#000000;
+	fill-opacity:1;
+	stroke:none;
+	font-family:Sans
+}
+.life-span {
+	fill:none;
+	stroke:#444f30;
+	stroke-width:3;
+	stroke-linecap:butt;
+	stroke-linejoin:miter;
+	stroke-miterlimit:4;
+	stroke-opacity:0.65789472;
+	stroke-dasharray:none;
+	marker-end:url(#StopL)
+}
+.card-photo-bg {
+	fill:#3f0e0e;
+	fill-opacity:0.44690265;
+	stroke:#000000;
+	stroke-width:1;
+	stroke-linecap:butt;
+	stroke-linejoin:miter;
+	stroke-miterlimit:4;
+	stroke-opacity:0.96052629;
+	stroke-dasharray:none;
+	stroke-dashoffset:0
+}
+.marriage-bg {
+/*	fill:url(#linearGradient3761); */
+/*	fill: linear-gradient(left, #68547c 0%,#77416d 100%);  W3C */ 
+	fill: orange;
+/*fill: -moz-linear-gradient(left, #68547c 0%, #77416d 100%); /* FF3.6+ */
+/*fill: -webkit-gradient(linear, left top, right top, color-stop(0%,#68547c), color-stop(100%,#77416d)); /* Chrome,Safari4+ */
+/*fill: -webkit-linear-gradient(left, #68547c 0%,#77416d 100%); /* Chrome10+,Safari5.1+ */
+/*fill: -o-linear-gradient(left, #68547c 0%,#77416d 100%); /* Opera 11.10+ */
+/*fill: -ms-linear-gradient(left, #68547c 0%,#77416d 100%); /* IE10+ */
+/*fill: linear-gradient(left, #68547c 0%,#77416d 100%); /* W3C */
+	fill-opacity:1;
+	stroke:#444f30;
+	stroke-width:1;
+	stroke-linecap:butt;
+	stroke-linejoin:miter;
+	stroke-miterlimit:4;
+	stroke-opacity:0.65789472;
+	stroke-dasharray:none;
+	stroke-dashoffset:0
+}
+.marriage-image-bg {
+	fill:#785c3d;
+	fill-opacity:0.38596491;
+	stroke:#444f30;
+	stroke-width:1;
+	stroke-linecap:butt;
+	stroke-linejoin:miter;
+	stroke-miterlimit:4;
+	stroke-opacity:0.65789472;
+	stroke-dasharray:none;
+	stroke-dashoffset:0
+}
+.marriage-surname {
+	font-size:12px;
+	font-style:normal;
+	font-weight:normal;
+	line-height:125%;
+	letter-spacing:0px;
+	word-spacing:0px;
+	fill:#000000;
+	fill-opacity:1;
+	stroke:none;
+	font-family:Sans
+}
+.marriage-date {
+	font-size:10px;
+	font-style:normal;
+	font-weight:normal;
+	line-height:125%;
+	letter-spacing:0px;
+	word-spacing:0px;
+	fill:#000000;
+	fill-opacity:1;
+	stroke:none;
+	font-family:sans
+}
+
+.edge {
+	fill:none;
+	stroke-width:5px;
+	stroke-linecap:butt;
+	stroke-linejoin:miter;
+	stroke-opacity:1;
+	marker-end:none
+}
+.tick {
+	fill:none;
+	stroke:#3f0e0e;
+	stroke-width:1;
+	stroke-linecap:butt;
+	stroke-linejoin:miter;
+	stroke-miterlimit:4;
+	stroke-opacity:1;
+}
+.tick-label {
+	font-size:17px;
+	font-style:normal;
+	font-weight:normal;
+	line-height:125%;
+	letter-spacing:0px;
+	word-spacing:0px;
+	fill:#000000;
+	fill-opacity:1;
+	stroke:none;
+	font-family:sans
+}
+.mark {
+	fill:none;
+	stroke:#3f0e0e;
+	stroke-width:3;
+	stroke-linecap:butt;
+	stroke-linejoin:miter;
+	stroke-miterlimit:4;
+	stroke-opacity:1;
+}
+.mark-label {
+	font-size:20px;
+	font-style:normal;
+	font-weight:bold;
+	line-height:125%;
+	letter-spacing:0px;
+	word-spacing:0px;
+	fill:#000000;
+	fill-opacity:1;
+	stroke:none;
+	font-family:sans
+}
+.now {
+	fill:none;
+	stroke:#3f0e0e;
+	stroke-width:5;
+	stroke-linecap:butt;
+	stroke-linejoin:miter;
+	stroke-miterlimit:4;
+	stroke-opacity:1;
+}
+.now-label {
+	font-size:20px;
+	font-style:normal;
+	font-weight:bold;
+	line-height:125%;
+	letter-spacing:0px;
+	word-spacing:0px;
+	fill:#000000;
+	fill-opacity:1;
+	stroke:none;
+	font-family:sans
+}

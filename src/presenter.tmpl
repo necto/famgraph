@@ -1,0 +1,489 @@
+{namespace kin-templates}
+
+{template card}
+{if not $bodyOnly}
+<svg {if $pos} x="{$pos.x}" y="{$pos.y}" {/if} id="card{$id}"
+{if $simple}
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+	 width="200" height="100"
+{else}
+	 onclick="top.cardClicked({$id})"
+{/if}
+	 >
+{/if}
+    <rect
+       width="200"
+       height="100"
+       x="0.5"
+       y="-0.13781738"
+       id="rect3755"
+	   class="card-bg {$sex}"/>
+   <text
+	   id="text3757"
+	   xml:space="preserve"
+	   class="card-text">
+		<tspan
+			x="10"
+			y="23.362183"
+			id="tspan3759">{$name}</tspan>
+		<tspan
+			x="10"
+			y="36.362183"
+			id="tspan3763">{$middleName}</tspan>
+		<tspan
+			x="10"
+			y="49.362183"
+			id="tspan3767">{$surname}</tspan>
+		{if not $dateUnknown}
+		<tspan
+			x="10"
+			y="86.362183"
+			id="tspan3771">{$birth} - {$death}</tspan>
+		{/if}
+	</text>
+    <rect
+       width="62.5"
+       height="75.5"
+       x="130.5"
+       y="8.8"
+       id="rect3773"
+       class="card-photo-bg" />
+    <image
+		xlink:href="file/image/{$photo}"
+       x="130.5"
+       y="8.8"
+       width="62.5"
+       height="75.5"
+       id="image3946"/>
+
+	{if (not $dateUnknown) and $age}
+    <path
+       d="M 0.5,0 v {$age}"
+       id="path7738"
+       class="life-span" />
+	{/if}
+{if not $bodyOnly}
+  </svg>
+{/if}
+{/template}
+
+{template marriage}
+<svg x="{$pos.x}" y="{$pos.y}" id="marriage{$id}"
+	 onclick="top.marrClicked({$id})">
+
+<rect
+       width="140"
+       height="80"
+       x="0.33399335"
+       y="0.37653884"
+       id="rect2985"
+       class="marriage-bg"/>
+    <rect
+       width="88.7"
+       height="48.1"
+       x="5.7"
+       y="23.9"
+       id="rect3763"
+       class="marriage-image-bg"/>
+    <image
+		xlink:href="file/image/{$photo}"
+       x="5.7"
+       y="23.9"
+       width="88.7"
+       height="48.1"
+       id="image3946" />
+    <text
+       id="text3767"
+       xml:space="preserve"
+       class="marriage-surname"><tspan
+         x="4.9497476"
+         y="16.097195"
+         id="tspan3769">{$surname}</tspan></text>
+	{if not $dateUnknown}
+    <text
+       id="text3771"
+       xml:space="preserve"
+       class="marriage-date"><tspan
+         x="96.873634"
+         y="70.897972"
+         id="tspan3773">{$date}</tspan></text>
+	{/if}
+  </svg>
+{/template}
+
+{template edge}
+<path
+	d="M {$from.x} {$from.y} {$to.x} {$to.y}"
+   	class="edge" style="stroke:{$color}"/>
+{/template}
+
+{template tick}
+<path
+	d="m 0,{$y} h 20" class="tick"/>
+<text
+       x="20"
+       y="{$y - 10}"
+       id="text3771"
+       xml:space="preserve"
+       class="tick-label">{$label}</text>
+{/template}
+
+{template mark}
+<path
+     d="m 0,{$y} h {$length}" class="mark"/>
+<text
+       x="20"
+       y="{$y + 20}"
+       id="text3771"
+       xml:space="preserve"
+       class="mark-label">{$label}</text>
+{/template}
+
+{template now}
+<path
+     d="m 0,{$y} h {$length}"
+     id="path2998"
+     class="now"/>
+<text
+       x="20"
+       y="{$y - 20}"
+       id="text3771"
+       xml:space="preserve"
+       class="now-label">{$label}</text>
+{/template}
+
+{template background}
+<g>
+{foreach $mark in $marks}
+	{call mark data="$mark"/}
+{/foreach}
+{foreach $tick in $ticks}
+	{call tick data="$tick"/}
+{/foreach}
+{call now data="$now"/}
+</g>
+{/template}
+
+
+{template tree}
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet href="file/style/tree.css" type="text/css"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/SVG/DTD/svg10.dtd">
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.2"
+   width="{$size.x}"
+   height="{$size.y}"
+   id="svg6590">
+
+   <defs id="defs4">
+	   <marker
+		   refX="0"
+		   refY="0"
+		   orient="auto"
+		   id="StopL"
+		   style="overflow:visible">
+		   <path
+			   d="M 0,5.65 0,-5.65"
+			   transform="scale(0.8,0.8)"
+			   id="path4667"
+			   style="fill:none;stroke:#000000;stroke-width:1pt" />
+	   </marker>
+	   /*	   <linearGradient
+		   id="linearGradient3755">
+		   <stop
+			   id="stop3757"
+			   style="stop-color:#7f5db6;stop-opacity:0.81751823"
+			   offset="0" />
+		   <stop
+			   id="stop3759"
+			   style="stop-color:#b65d88;stop-opacity:0.83211678"
+			   offset="1" />
+	   </linearGradient>
+	   <linearGradient
+		   x1="48.07143"
+		   y1="103.79075"
+		   x2="189.07143"
+		   y2="103.79075"
+		   id="linearGradient3761"
+		   xlink:href="#linearGradient3755"
+		   gradientUnits="userSpaceOnUse"
+		   gradientTransform="translate(-48.237437,-63.414214)" /> */
+   </defs>
+  <metadata
+     id="metadata6595">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1">
+
+	{call background data="$background"/}
+
+	{foreach $ed in $edges}
+		{call edge data="$ed"/}
+	{/foreach}
+
+	{foreach $it in $nodes}
+		{if $it.type == 'PERSON'}
+			{call card data="$it"/}
+		{else}
+			{call marriage data="$it"/}
+		{/if}
+	{/foreach}
+
+  </g>
+</svg>
+{/template}
+
+{template tree-page}
+<html>
+	<head>
+		<link rel="stylesheet" href="file/style/edit-tree.css"/>
+		<script type="text/javascript" src="file/script/edit-tree.js">
+		</script>
+	</head>
+	<body>
+		<H1>
+		Genealogy tree
+		</h1>
+		<object id="tree" data="tree"
+				class=""
+				style="float:left;overflow:scroll;height:85%;width:80%;"
+				type="image/svg+xml"></object>
+		<iframe id="right-panel" frameborder=0
+				style="float:right;width:20%;height:85%"
+				src="new-items" > </iframe>
+		<p> copyright </p>
+
+	</body>
+</html>
+{/template}
+
+{template photo-upload-head}
+{literal}
+	<script type="text/javascript">
+	function uploadImg()
+	{
+		document.getElementById("photo-upload").submit();
+	}
+	function finishUpload(file)
+	{
+		document.getElementById("preview").src = "file/image/" + file;
+		document.getElementById("photo").value = file;
+	}
+	</script>
+{/literal}
+
+{/template}
+
+{template photo-upload-button}
+
+
+<form method="POST" action="upload-photo"
+	  enctype="multipart/form-data" id="photo-upload"
+	  target="upload_target">
+	  <input id="file-photo-upload" type="file"
+			 onChange="uploadImg()" name="file"/>
+</form>
+<iframe id="upload_target" name="upload_target"
+		src="#" style="width:0;height:0;border:0px solid #fff;">
+</iframe>
+{/template}
+
+{template person-changer}
+<html>
+<head>
+{call photo-upload-head /}
+</head>
+<body>
+<form method="post" action="alter-person"
+	  enctype="multipart/form-data">
+	  <input type="hidden" name="id" value="{$id}" />
+	  {if $new}
+		<input type="hidden" name="new" value="{$new}" />
+	  {/if}
+
+	  <label for="name">Имя:</label>
+	  <input type="text" id="name" name="name" value="{$name}"/><br />
+
+	  <label for="midname">Отчество:</label>
+	  <input type="text" id="midname" name="middle-name"
+			 value="{$middleName}"/><br />
+
+	  <label for="surname">Фамилия:</label>
+	  <input id="surname" type="text" id="surname"
+			 name="surname" value="{$surname}"/><br/>
+
+	  <label for="sex">Пол:</label> <br/>
+	  <input type="radio" name="sex" value="male" id="sex"
+			 {if $sex == 'MALE'}
+				checked="checked"
+			 {/if}/> Мужской<br />
+	  <input type="radio" name="sex" value="female"
+		 	 {if $sex == 'FEMALE'}
+				checked="checked"
+			 {/if} /> Женский<br />
+
+	  <label for="date">Год рождения:</label>
+	  <input type="text" name="date" id="date" value="{$birth}"/>
+	  <input type="checkbox" name="date-unknown" value="yes" id="d-unkn"
+			 {if $dateUnknown}
+				checked="checked"
+			 {/if} /><label for="d-unkn">Точно не известен </label><br/>
+
+	  <label for="d-date">Год смерти:</label>
+	  <input type="text" name="death" id="d-date" value="{$death}"/>
+	  <input type="checkbox" name="death-unknown" value="yes" id="dd-unkn"
+			 {if $deathDateUnknown}
+				checked="checked"
+			 {/if} /><label for"dd-unkn">Точно не известен</label><br/>
+
+	  <label > Фотография: </label>
+	  <img style="width:100%;height:auto"
+		   src="file/image/{$photo}" id="preview"/>
+	  <input type="hidden" name="photo" id="photo" value="{$photo}"/><br/>
+	  <input type="submit" value="Submit" />
+</form>
+
+{call photo-upload-button/}
+</body>
+
+</html>
+{/template}
+
+{template wedding-changer}
+<hmtl>
+<head>
+<link rel="stylesheet" href="file/style/tree.css"/>
+{call photo-upload-head/}
+<script type="text/javascript" src="file/script/marr-form.js"> </script>
+</head>
+<body>
+<form method="post" action="alter-marriage"
+	  enctype="multipart/form-data">
+	  <input type="hidden" name="id" value="{$id}" />
+	  {if $new}
+		<input type="hidden" name="new" value="{$new}" />
+	  {/if}
+	  
+	  <label for="surname">Фамилия:</label>
+	  <input id="surname" type="text" id="surname"
+			 name="surname" value="{$surname}"/><br/>
+	  
+	  <input type="hidden" id="man" name="man" value="{$manId}" />
+	  <div id="manCont">
+	  {if $man}
+	  	<div id="manAlloc">
+			{call card data="$man"/}
+			<div id="remMan" onClick="rem('man')"> remove </div>
+			<div id="chgMan" onClick="change('man', manAdd)"> change </div>
+		</div>
+	  {else}
+	    <div id="manSet" onClick="parent.window.setDoWithCards(manAdd)">
+		    set man
+	   	</div>
+	  {/if}
+	  </div>
+	  <input type="hidden" id="wife" name="wife" value="{$wifeId}" />
+	  <div id="wifeCont">
+	  {if $wife}
+	  	<div id="wifeAlloc">
+			{call card data="$wife"/}
+			<div id="remWife" onClick="rem('wife')"> remove </div>
+			<div id="chgWife" onClick="change('wife', wifeAdd)">
+			   	change </div>
+		</div>
+	  {else}
+	    <div id="wifeSet" onClick="parent.window.setDoWithCards(wifeAdd)">
+			set wife
+	   	</div>
+	  {/if}
+	  </div>
+	  <label > Фотография: </label>
+	  <img style="width:100%;height:auto"
+		   src="file/image/{$photo}" id="preview"/>
+	  <input type="hidden" name="photo" id="photo" value="{$photo}"/><br/>
+
+	  <input type="hidden" name="children"
+			 id="children" {if $childIds}
+							 value="{$childIds}"
+						   {else}
+							 value="()"
+						   {/if} />
+	  <div id="addChld" onclick="parent.window.setDoWithCards(addChld)">
+		  add
+	  </div>
+	  <div id="childs" >
+	  {foreach $child in $children}
+		<div id="chldAlloc{$child.id}">
+		{call card data="$child"/}
+		<div id="rem{$child.id}" onclick="removeChld({$child.id})" >
+		   	remove </div>
+		</div>
+	  {/foreach}
+	  </div>
+
+	  <br/><label for="date">Год свадьбы:</label>
+	  <input type="text" name="date" id="date" value="{$date}"/><br/>
+	  <input type="checkbox" name="date-unknown" value="yes" id="d-unkn"
+			 {if $dateUnknown}
+				checked="checked"
+			 {/if} /><label for="d-unkn">Точно не известен</label><br/>
+
+	  <input type="submit" value="Submit" />
+</form>
+{call photo-upload-button/}
+</body>
+</html>
+{/template}
+
+{template new-items}
+<html>
+<head>
+</head>
+<body>
+<div id="new-pers" onclick="window.location = 'new-person'">
+	new person
+</div>
+<div id="new-marr" onclick="location = 'new-wedding'">
+	new family
+</div>
+</body>
+</html>
+{/template}
+
+{template upload-finished}
+<script language="javascript" type="text/javascript">
+parent.finishUpload("{$file}");
+</script> 
+{/template}
+
+
+{template refresh-tree}
+<script language="javascript" type="text/javascript">
+top.refreshTree();
+location="new-items";
+</script> 
+{/template}
+
+{template refresh-node}
+<script language="javascript" type="text/javascript">
+top.refreshNode ({$id}, "{$text}");
+</script> 
+{/template}
+
+
