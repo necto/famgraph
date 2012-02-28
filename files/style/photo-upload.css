@@ -1,0 +1,27 @@
+
+#photo-upload-container {
+	position: relative;
+	width: 50px;
+	height: 50px;
+	border: 1px solid red;
+	overflow: hidden;
+}
+#photo-upload-btn, #file-photo-upload {
+	position: absolute;
+	cursor: default;
+}
+#photo-upload-btn {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: auto;
+	border: 1px solid #000;
+}
+#file-photo-upload {
+	opacity: 0.001;
+	font-size: 5300%;
+	top: -5px;
+	right: -5px;
+	overflow: auto;
+}
+
