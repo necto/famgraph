@@ -164,11 +164,14 @@
 </g>
 {/template}
 
-
-{template tree}
+{template svg-head}
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet href="file/style/tree.css" type="text/css"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/SVG/DTD/svg10.dtd">
+{/template}
+
+
+{template tree-data}
 
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -180,7 +183,11 @@
    version="1.2"
    width="{$size.x}"
    height="{$size.y}"
-   id="svg6590">
+//	width="300"
+//	height="300"
+//   viewBox="0 0 300 300"
+//	viewBox="0 0 {$size.x} {$size.y}"
+   id="tree-svg">
 
    <defs id="defs4">
 	   <marker
@@ -249,6 +256,13 @@
 </svg>
 {/template}
 
+{template tree}
+
+{call svg-head /}
+{call tree-data data="all" /}
+
+{/template}
+
 {template tree-page}
 <html>
 	<head>
@@ -260,7 +274,12 @@
 		<H1>
 		Genealogy tree
 		</h1>
-		<object id="tree" data="tree"
+		<object id="tree" data=
+				{if $agent == 'firefox'}
+					"tree"
+				{else}
+					"view-tree"
+				{/if}
 				class=""
 				style="float:left;overflow:scroll;height:85%;width:80%;"
 				type="image/svg+xml"></object>
@@ -271,6 +290,36 @@
 
 	</body>
 </html>
+{/template}
+
+{template view-tree}
+{call svg-head /}
+<svg onload="ecmascript:init(evt, 'tree-svg')"
+	 id="tree-view-container"
+	 zoomAndPan="disable" onmousedown="startDrag(evt)"
+	 onmousemove="drag(evt)" onmouseup="stop(evt)"
+	 version="1.1"
+//	 width="500px"
+//	 height="500px"
+//	 width="70%"
+//	 height="70%"
+	 style='-moz-user-select: none;-webkit-user-select: none;'
+	 xml:space="preserve"
+	 xmlns="http://www.w3.org/2000/svg"
+	 xmlns:ev="http://www.w3.org/2001/xml-events"
+	 xmlns:xlink="http://www.w3.org/1999/xlink">
+	<script type="text/ecmascript" xlink:href="file/script/viewbox.js"/>
+
+	{call tree-data data="$tree"/}
+
+	<rect id="minimap" x="0" y="0" width="50"
+		  height="50" onmousemove="doNav(evt)" style="fill:rgb(100, 50, 200);;opacity:0.4;stroke:grey;stroke-width:1"/>
+	<rect id="minimap-window" x="0" y="0" width="0"
+		  height="0" style = "fill:white;stroke:yellow;stroke-width:1"
+		  onmousedown="startNav(evt)" onmousemove="doNav(evt)"
+		  onmouseup="stop(evt)"/>
+</svg>
+
 {/template}
 
 {template photo-upload-head}
@@ -285,20 +334,36 @@
 		document.getElementById("preview").src = "file/image/" + file;
 		document.getElementById("photo").value = file;
 	}
+	function ininini(evt)
+	{
+		document.getElementById("photo-upload-container").style.top = document.getElementById("preview").offsetTop;
+		document.getElementById("photo-upload-container").style.position = "absolute";
+	}
+//	function phUplSet()
+//	{
+		//document.getElementById("file-photo-upload").style.top = 1000px;
+//		alert (document.getElementById("file-photo-upload").style.top);
+//			document.getElementById("preview").style.top;
+//	}
 	</script>
 {/literal}
+<link rel="stylesheet" type="text/css" href="file/style/photo-upload.css"/>
 
 {/template}
 
 {template photo-upload-button}
 
-
+<div id="photo-upload-container">
+<img src="file/image/nicubunu_Peer_to_peer.svg"
+	 id="photo-upload-btn"
+	 alt="Изменить фото"></img>
 <form method="POST" action="upload-photo"
 	  enctype="multipart/form-data" id="photo-upload"
 	  target="upload_target">
 	  <input id="file-photo-upload" type="file"
 			 onChange="uploadImg()" name="file"/>
 </form>
+</div>
 <iframe id="upload_target" name="upload_target"
 		src="#" style="width:0;height:0;border:0px solid #fff;">
 </iframe>
@@ -309,7 +374,7 @@
 <head>
 {call photo-upload-head /}
 </head>
-<body>
+<body onload="ininini(evt)">
 <form method="post" action="alter-person"
 	  enctype="multipart/form-data">
 	  <input type="hidden" name="id" value="{$id}" />
@@ -372,7 +437,7 @@
 {call photo-upload-head/}
 <script type="text/javascript" src="file/script/marr-form.js"> </script>
 </head>
-<body>
+<body onload="ininini(evt)">
 <form method="post" action="alter-marriage"
 	  enctype="multipart/form-data">
 	  <input type="hidden" name="id" value="{$id}" />
@@ -457,10 +522,10 @@
 </head>
 <body>
 <div id="new-pers" onclick="window.location = 'new-person'">
-	new person
+	Добавить человека.
 </div>
 <div id="new-marr" onclick="location = 'new-wedding'">
-	new family
+	Объединить в семью.
 </div>
 </body>
 </html>

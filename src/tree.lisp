@@ -52,16 +52,16 @@
 		   (collect node))))
 
 (defun print-node (node stream)
-  (flet ((get-ids (nodes)
+  (flet ((get-datas (nodes)
 		   (iter (for n in nodes)
-				 (collect (item-id (node-data n))))))
+				 (collect (node-data n)))))
 	(format stream 
 	  		"( pos:~a size:~a~% marks:~a preds:~a succs:~a data:~a )"
 			(node-pos node)
 			(node-size node)
 			(node-marks node)
-			(get-ids (node-preds node))
-			(get-ids (node-succs node))
+			(get-datas (node-preds node))
+			(get-datas (node-succs node))
 			(node-data node))))
 
 

@@ -51,27 +51,27 @@
 	(person *date-adjust-step-wedding*)))
 
 
-(defun suggest-neibour-adges (node)
+(defun suggest-neighbour-adges (node)
   (let ((date (item-date (node-data node))))
 	(when date
 	  (iter (for succ in (node-succs node))
 			(when (not (item-date (node-data succ)))
 			  (propose-node-date succ
 				(+ date (get-usual-date-step node)))
-			  (suggest-neibour-adges succ)))
+			  (suggest-neighbour-adges succ)))
 	  (iter (for pred in (node-preds node))
 			(when (not (item-date (node-data pred)))
 			  (propose-node-date pred
 				(- date (get-usual-date-step pred)))
-			  (suggest-neibour-adges pred))))))
+			  (suggest-neighbour-adges pred))))))
 
 (defun suggest-adges (nodes)
   (iter (for n in nodes)
-		(suggest-neibour-adges n))
+		(suggest-neighbour-adges n))
   (iter (for n in nodes)
 		(when (null (item-date (node-data n)))
 		  (propose-node-date n *start-year*)
-		  (suggest-neibour-adges n))))
+		  (suggest-neighbour-adges n))))
 
 (defun arrange-vertically (nodes)
   (iter (for n in nodes)
@@ -81,7 +81,7 @@
 
 (defun fill-edges (nodes weddings)
   (labels ((get-node (id)
-		     (find-if #'(lambda (node) (equalp (item-id (node-data node)) id)) nodes))
+		     (find-if #'(lambda (node) (equalp (id (node-data node)) id)) nodes))
 		   (add-edge (start-id finish-id)
 			 (let ((start (get-node start-id))
 				   (finish (get-node finish-id)))
@@ -89,11 +89,11 @@
 			   (pushnew start (node-preds finish)))))
 	(iter (for wed in weddings)
 		  (when (marriage-man wed)
-			(add-edge (marriage-man wed) (item-id wed)))
+			(add-edge (marriage-man wed) (id wed)))
 		  (when (marriage-wife wed)
-		    (add-edge (marriage-wife wed) (item-id wed)))
+		    (add-edge (marriage-wife wed) (id wed)))
 		  (iter (for child in (marriage-children wed))
-				(add-edge (marriage-id wed) child)))))
+				(add-edge (id wed) child)))))
 
 #+nil(
 (defun compare-nodes (a b)
@@ -102,9 +102,9 @@
 				(marriage (and (marriage-date a)
 							   (or (not (marriage-date b))
 								   (< (marriage-date a) (marriage-date b)))))
-				(person  (not (or (equal (item-id b) (marriage-man a))
-								 (equal (item-id b) (marriage-wife a)))))))
-;								 (find (item-id b) (marriage-children a) :test #'equal)))));(if (not (equal (item-id b) (marriage-man a))) t))))
+				(person  (not (or (equal (id b) (marriage-man a))
+								 (equal (id b) (marriage-wife a)))))))
+;								 (find (id b) (marriage-children a) :test #'equal)))));(if (not (equal (id b) (marriage-man a))) t))))
 	(person (ctypecase b
 			  (marriage (not (compare-nodes b a)))
 			  (person (cond ((and (equal (person-sex a) 'male)
@@ -135,7 +135,7 @@
 
 (defun place-nodes (nodes &optional (origin *origin*))
 ;  (arrange-nodes-tight nodes)
-;  (time (arrange-tree-broad (fourth nodes)))
+;  (time (arrange-tree-broad (first nodes)))
   (arrange-forest-broad nodes)
   (to-positives nodes)
   (move-tree nodes origin)

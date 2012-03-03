@@ -2,10 +2,13 @@
 (in-package #:kin-package)
 
 (restas:define-route main ("")
-  (get-page))
+  (get-page (search "Firefox" (hunchentoot:user-agent))))
 
 (restas:define-route tree ("tree" :content-type "image/svg+xml")
   (draw-tree))
+
+(restas:define-route view-tree ("view-tree" :content-type "image/svg+xml")
+  (draw-view-tree))
 
 (defun parse-native-namestring (thing)
   #+sbcl (sb-ext:parse-native-namestring thing)
@@ -51,7 +54,7 @@
   (when (and post-parameter
 			 (listp post-parameter))
 	(destructuring-bind (path file-name content-type)
-	  post-parameter
+	  post-parameter 
 	  (declare (ignore content-type))
 	  (setq file-name (format nil "~a" (gen-fname))) ; file-name))
 	  (let ((new-path (merge-pathnames
@@ -71,7 +74,7 @@
 
 (restas:define-route alter-pers ("alter-person" :method :post)
   (let ((pers 
-			(make-person 
+			(make-instance 'person ;make-person 
 			  :id (safe-parse-integer (post-param "id"))
 			  :name (post-param "name")
 			  :middle-name (post-param "middle-name")
@@ -84,9 +87,10 @@
 			  :date-unknown (not (null (post-param "date-unknown")))
 			  :death-date-unknown (not (null (post-param "death-unknown")))
 			  :photo (post-param "photo"))))
-	(if (post-param "new")
-	  (insert-person pers *storage*)
-	  (alter-person pers *storage*))
+	(alter-person pers *storage*)
+;	(if (post-param "new")
+;	  (insert-person pers *storage*)
+;	  (alter-person pers *storage*))
 	(refresh-tree)))
 
 (defun get-children-list (param)
@@ -95,7 +99,7 @@
 	  (read is))))
 
 (restas:define-route alter-marr ("alter-marriage" :method :post)
-  (let ((wedd (make-marriage
+  (let ((wedd (make-instance 'marriage ;make-marriage
 				:id (safe-parse-integer (post-param "id"))
 				:man (safe-parse-integer (post-param "man"))
 				:wife (safe-parse-integer (post-param "wife"))
@@ -104,9 +108,10 @@
 				:date (post-param "date")
 				:date-unknown (post-param "date-unknown")
 				:children (get-children-list (post-param "children")))))
-	(if (post-param "new")
-	  (insert-marriage wedd *storage*)
-	  (alter-marriage wedd *storage*)))
+	(alter-marriage wedd *storage*))
+;	(if (post-param "new")
+;	  (insert-marriage wedd *storage*)
+;	  (alter-marriage wedd *storage*)))
   (refresh-tree))
 	;(format nil "~a" wedd)))
 
@@ -116,10 +121,10 @@
   (person-card (get-person (parse-integer id) *storage*)))
 
 (restas:define-route new-person ("new-person" :method :get)
-  (person-change (make-person :id (get-uniq-number *storage*)) :new t))
+  (person-change (make-instance 'person))); (make-person :id (get-uniq-number *storage*)) :new t))
 
 (restas:define-route new-wedding ("new-wedding" :method :get)
-  (wedding-change (make-marriage :id (get-uniq-number *storage*))
+  (wedding-change (make-instance 'marriage); (make-marriage :id (get-uniq-number *storage*))
 				  nil nil nil :new t))
 
 (restas:define-route new-items ("new-items")

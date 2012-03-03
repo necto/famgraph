@@ -1,15 +1,17 @@
 (in-package #:kin-package)
 
 
-(defun get-page ()
-  (kin-templates:tree-page))
+(defun get-page (is-firefox)
+  (kin-templates:tree-page `(:agent ,(if is-firefox
+									   "firefox"
+									   "other"))))
 
 (defun graphic-vec (vec)
   `(:x ,(vec-x vec) :y ,(vec-y vec)))
 
 (defun graphic-marriage (marr)
-  `(:id ,(marriage-id marr)
-	:date ,(marriage-date marr)
+  `(:id ,(id marr)
+	:date ,(item-date marr)
 	:date-unknown ,(item-date-unknown marr)
 	:photo ,(if (marriage-photo marr)
 			  (marriage-photo marr)
@@ -17,7 +19,7 @@
     :surname ,(marriage-surname marr)))
 
 (defun graphic-person (pers)
-  `(:id ,(person-id pers)
+  `(:id ,(id pers)
 	:name ,(person-name pers)
 	:middle-name ,(person-middle-name pers)
 	:surname ,(person-surname pers)
@@ -28,7 +30,7 @@
 			  "nophoto.jpg")
 	:date-unknown ,(item-date-unknown pers)
 	:death-date-unknown ,(person-death-date-unknown pers)
-	:birth ,(person-date pers)
+	:birth ,(item-date pers)
 	:death ,(person-death-date pers)))
 
 (defun simple-graphic-person (pers)
@@ -71,19 +73,24 @@
 		   :length ,width
 		   :label ,(format nil "~a - сейчас" *now*))))
 
+(defun graphic-tree (nodes)
+  (let ((size (get-tree-size nodes)))
+	`(:nodes ,(transform-node-list nodes)
+	  :edges ,(transform-edge-list (build-edges nodes))
+	  :size ,(graphic-vec size)
+	  :background ,(generate-scale
+					 *start-year*
+					 (+ *start-year*
+						(height-to-age (vec-y size)))
+							(vec-x size)))))
+
 
 (defun draw-tree ()
-; (format nil "~a" `(:nodes ,(transform-node-list (arrange-nodes (build-tree))))))
-  (let* ((nodes (place-nodes (build-tree)))
-		 (size (get-tree-size nodes)))
-	(kin-templates:tree `(:nodes ,(transform-node-list nodes)
-						  :edges ,(transform-edge-list (build-edges nodes))
-						  :size ,(graphic-vec size)
-						  :background ,(generate-scale
-										 *start-year*
-										 (+ *start-year*
-											(height-to-age (vec-y size)))
-													   (vec-x size))))))
+  (kin-templates:tree (graphic-tree (place-nodes (build-tree)))))
+
+(defun draw-view-tree ()
+  (kin-templates:view-tree 
+	`(:tree ,(graphic-tree (place-nodes (build-tree))))))
 
 (defun person-change (pers &key new)
   (kin-templates:person-changer `(,@(graphic-person pers)
@@ -108,7 +115,7 @@
 
 (defun refresh-node (pers)
   (kin-templates:refresh-node 
-	`(:id ,(person-id pers)
+	`(:id ,(id pers)
 		  ,(kin-templates:card (append (graphic-person pers)
 									   '(:body-only t))))))
 
