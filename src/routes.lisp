@@ -15,7 +15,8 @@
   #-sbcl (parse-namestring thing))
 
 (restas:define-route route ("file/*path" :method :get)
-  (let* ((relative-path (parse-native-namestring (format nil "~{~A~^/~}" path)))
+  (let* ((relative-path (parse-native-namestring
+						  (format nil "~{~A~^/~}" path)))
          (path (merge-pathnames relative-path
                                 "files/")))
 	(cond
@@ -36,16 +37,13 @@
 (restas:define-route wedding-change-route
 					 ("wedding:(id)" :parse-vars (list :id #'parse-integer))
   (let ((wedd (get-wedding id *storage*)))
-	(wedding-change wedd (get-person (marriage-man wedd) *storage*)
-						 (get-person (marriage-wife wedd) *storage*)
-						 (get-persons (marriage-children wedd)))))
+	(wedding-change wedd (get-person (m-man wedd) *storage*)
+						 (get-person (m-wife wedd) *storage*)
+						 (get-persons (m-children wedd)))))
 
 (defun safe-parse-integer (str)
   (if (and str (not (equalp "" str)))
 	(parse-integer str)))
-
-;(let ((counter 0))
-;  (defun gen-fname () (format nil "~a" (incf counter))))
 
 (defun gen-fname () (format nil "~a" (get-universal-time)))
 
@@ -88,8 +86,7 @@
   (person-change (make-instance 'person)))
 
 (restas:define-route new-wedding ("new-wedding" :method :get)
-  (wedding-change (make-instance 'marriage)
-				  nil nil nil))
+  (wedding-change (make-instance 'marriage) nil nil nil))
 
 (restas:define-route new-items ("new-items")
   (draw-new-items))

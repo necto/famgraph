@@ -5,7 +5,7 @@
 (defparameter *start-year* 1750)
 (defparameter *origin* (make-vect 40 0))
 
-(defparameter *person-size* (make-vect (+ 200 5) (+ 100 5)))
+(defparameter *p-size* (make-vect (+ 200 5) (+ 100 5)))
 (defparameter *wedding-size* (make-vect (+ 140 5) (+ 80 5)))
 
 (defun age-to-height (age &key (absolute nil))
@@ -26,7 +26,7 @@
 (defun node-full-height (node)
   (ctypecase (node-data node)
 	(marriage (vec-y (node-size node)))
-	(person (max (age-to-height (person-age (node-data node)))
+	(person (max (age-to-height (p-age (node-data node)))
 				 (vec-y (node-size node))))))
 
 (defun init-tree (data)
@@ -35,7 +35,7 @@
 		  (make-node
 			:pos (make-vect 0 0)
 			:size (ctypecase n
-					(person *person-size*)
+					(person *p-size*)
 					(marriage *wedding-size*))
 			:preds nil
 			:succs nil
@@ -93,31 +93,31 @@
 			   (pushnew finish (node-succs start))
 			   (pushnew start (node-preds finish)))))
 	(iter (for wed in weddings)
-		  (when (marriage-man wed)
-			(add-edge (marriage-man wed) (id wed)))
-		  (when (marriage-wife wed)
-		    (add-edge (marriage-wife wed) (id wed)))
-		  (iter (for child in (marriage-children wed))
+		  (when (m-man wed)
+			(add-edge (m-man wed) (id wed)))
+		  (when (m-wife wed)
+		    (add-edge (m-wife wed) (id wed)))
+		  (iter (for child in (m-children wed))
 				(add-edge (id wed) child)))))
 
 #+nil(
 (defun compare-nodes (a b)
   (ctypecase a
 	(marriage (ctypecase b
-				(marriage (and (marriage-date a)
-							   (or (not (marriage-date b))
-								   (< (marriage-date a) (marriage-date b)))))
-				(person  (not (or (equal (id b) (marriage-man a))
-								 (equal (id b) (marriage-wife a)))))))
-;								 (find (id b) (marriage-children a) :test #'equal)))));(if (not (equal (id b) (marriage-man a))) t))))
+				(marriage (and (m-date a)
+							   (or (not (m-date b))
+								   (< (m-date a) (m-date b)))))
+				(person  (not (or (equal (id b) (m-man a))
+								 (equal (id b) (m-wife a)))))))
+;								 (find (id b) (m-children a) :test #'equal)))));(if (not (equal (id b) (m-man a))) t))))
 	(person (ctypecase b
 			  (marriage (not (compare-nodes b a)))
-			  (person (cond ((and (equal (person-sex a) 'male)
-							      (equal (person-sex b) 'female)) t)
-							((and (equal (person-sex a) (person-sex b))
-								  (person-date a)
-								  (or (not (person-date b))
-								      (< (person-date a) (person-date b)))) t)
+			  (person (cond ((and (equal (p-sex a) 'male)
+							      (equal (p-sex b) 'female)) t)
+							((and (equal (p-sex a) (p-sex b))
+								  (p-date a)
+								  (or (not (p-date b))
+								      (< (p-date a) (p-date b)))) t)
 							(t nil)))))))
 )
 
