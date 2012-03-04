@@ -377,42 +377,42 @@
 <body onload="ininini(evt)">
 <form method="post" action="alter-person"
 	  enctype="multipart/form-data">
-	  <input type="hidden" name="id" value="{$id}" />
-	  {if $new}
-		<input type="hidden" name="new" value="{$new}" />
-	  {/if}
+	  <input type="hidden" name="{$names.id}" value="{$id}" />
 
 	  <label for="name">Имя:</label>
-	  <input type="text" id="name" name="name" value="{$name}"/><br />
+	  <input type="text" id="name" name="{$names.name}"
+			 value="{$name}"/><br />
 
 	  <label for="midname">Отчество:</label>
-	  <input type="text" id="midname" name="middle-name"
+	  <input type="text" id="midname" name="{$names.middleName}"
 			 value="{$middleName}"/><br />
 
 	  <label for="surname">Фамилия:</label>
 	  <input id="surname" type="text" id="surname"
-			 name="surname" value="{$surname}"/><br/>
+			 name="{$names.surname}" value="{$surname}"/><br/>
 
 	  <label for="sex">Пол:</label> <br/>
-	  <input type="radio" name="sex" value="male" id="sex"
+	  <input type="radio" name="{$names.sex}" value="male" id="sex"
 			 {if $sex == 'MALE'}
 				checked="checked"
 			 {/if}/> Мужской<br />
-	  <input type="radio" name="sex" value="female"
+	  <input type="radio" name="{$names.sex}" value="female"
 		 	 {if $sex == 'FEMALE'}
 				checked="checked"
 			 {/if} /> Женский<br />
 
 	  <label for="date">Год рождения:</label>
-	  <input type="text" name="date" id="date" value="{$birth}"/>
-	  <input type="checkbox" name="date-unknown" value="yes" id="d-unkn"
+	  <input type="text" name="{$names.date}" id="date" value="{$birth}"/>
+	  <input type="checkbox" name="{$names.dateUnknown}"
+			 value="yes" id="d-unkn"
 			 {if $dateUnknown}
 				checked="checked"
 			 {/if} /><label for="d-unkn">Точно не известен </label><br/>
 
 	  <label for="d-date">Год смерти:</label>
 	  <input type="text" name="death" id="d-date" value="{$death}"/>
-	  <input type="checkbox" name="death-unknown" value="yes" id="dd-unkn"
+	  <input type="checkbox" name="{$names.deathUnknown}"
+			 value="yes" id="dd-unkn"
 			 {if $deathDateUnknown}
 				checked="checked"
 			 {/if} /><label for"dd-unkn">Точно не известен</label><br/>
@@ -420,7 +420,8 @@
 	  <label > Фотография: </label>
 	  <img style="width:100%;height:auto"
 		   src="file/image/{$photo}" id="preview"/>
-	  <input type="hidden" name="photo" id="photo" value="{$photo}"/><br/>
+	  <input type="hidden" name="{$names.photo}"
+			 id="photo" value="{$photo}"/><br/>
 	  <input type="submit" value="Submit" />
 </form>
 
@@ -440,16 +441,13 @@
 <body onload="ininini(evt)">
 <form method="post" action="alter-marriage"
 	  enctype="multipart/form-data">
-	  <input type="hidden" name="id" value="{$id}" />
-	  {if $new}
-		<input type="hidden" name="new" value="{$new}" />
-	  {/if}
+	  <input type="hidden" name="{$names.id}" value="{$id}" />
 	  
 	  <label for="surname">Фамилия:</label>
 	  <input id="surname" type="text" id="surname"
-			 name="surname" value="{$surname}"/><br/>
+			 name="{$names.surname}" value="{$surname}"/><br/>
 	  
-	  <input type="hidden" id="man" name="man" value="{$manId}" />
+	  <input type="hidden" id="man" name="{$names.man}" value="{$manId}" />
 	  <div id="manCont">
 	  {if $man}
 	  	<div id="manAlloc">
@@ -463,7 +461,7 @@
 	   	</div>
 	  {/if}
 	  </div>
-	  <input type="hidden" id="wife" name="wife" value="{$wifeId}" />
+	  <input type="hidden" id="wife" name="{$names.wife}" value="{$wifeId}" />
 	  <div id="wifeCont">
 	  {if $wife}
 	  	<div id="wifeAlloc">
@@ -481,9 +479,9 @@
 	  <label > Фотография: </label>
 	  <img style="width:100%;height:auto"
 		   src="file/image/{$photo}" id="preview"/>
-	  <input type="hidden" name="photo" id="photo" value="{$photo}"/><br/>
+	  <input type="hidden" name="{$names.photo}" id="photo" value="{$photo}"/><br/>
 
-	  <input type="hidden" name="children"
+	  <input type="hidden" name="{$names.children}"
 			 id="children" {if $childIds}
 							 value="{$childIds}"
 						   {else}
@@ -503,8 +501,8 @@
 	  </div>
 
 	  <br/><label for="date">Год свадьбы:</label>
-	  <input type="text" name="date" id="date" value="{$date}"/><br/>
-	  <input type="checkbox" name="date-unknown" value="yes" id="d-unkn"
+	  <input type="text" name="{$names.date}" id="date" value="{$date}"/><br/>
+	  <input type="checkbox" name="{$names.dateUnknown}" value="yes" id="d-unkn"
 			 {if $dateUnknown}
 				checked="checked"
 			 {/if} /><label for="d-unkn">Точно не известен</label><br/>

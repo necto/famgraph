@@ -92,11 +92,11 @@
   (kin-templates:view-tree 
 	`(:tree ,(graphic-tree (place-nodes (build-tree))))))
 
-(defun person-change (pers &key new)
-  (kin-templates:person-changer `(,@(graphic-person pers)
-								  :new ,new)))
+(defun person-change (pers)
+  (kin-templates:person-changer
+	(append (graphic-person pers) `(:names ,(get-fields 'person)))))
 
-(defun wedding-change (marr man wife children &key new)
+(defun wedding-change (marr man wife children)
   (kin-templates:wedding-changer
 	`(,@(graphic-marriage marr)
 	  :man ,(if man (simple-graphic-person man))
@@ -105,7 +105,7 @@
 	  :wife-id ,(marriage-wife marr)
 	  :children ,(mapcar #'simple-graphic-person children)
 	  :child-ids ,(marriage-children marr)
-	  :new ,new)))
+	  :names ,(get-fields 'marriage))))
 
 (defun upload-finished (file)
   (kin-templates:upload-finished `(:file ,file)))

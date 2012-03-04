@@ -7,17 +7,17 @@
 
 
 (defclass item (identifable)
-  ((date-unknown :initform nil :accessor item-date-unknown :initarg :date-unknown)
-   (date :accessor item-date :initform nil :initarg :date)))
+  ((date-unknown :initform nil :accessor item-date-unknown)
+   (date :accessor item-date :initform nil )))
 
 (defclass person (item)
-	((name					:accessor person-name :initform nil :initarg :name)
-	 (middle-name			:accessor person-middle-name :initform nil :initarg :middle-name)
-	 (surname				:accessor person-surname :initform nil :initarg :surname)
-	 (sex					:accessor person-sex :initform nil :initarg :sex)
-	 (photo					:accessor person-photo :initform nil :initarg :photo)
-	 (death-date			:accessor person-death-date :initform nil :initarg :death-date)
-	 (death-date-unknown	:accessor person-death-date-unknown :initform nil :initarg :death-date-unknown)))
+	((name					:accessor person-name :initform nil )
+	 (middle-name			:accessor person-middle-name :initform nil)
+	 (surname				:accessor person-surname :initform nil )
+	 (sex					:accessor person-sex :initform nil )
+	 (photo					:accessor person-photo :initform nil )
+	 (death-date			:accessor person-death-date :initform nil)
+	 (death-date-unknown	:accessor person-death-date-unknown :initform nil)))
 
 (defun person-age (pers)
   (- (if (person-death-date pers)
@@ -30,11 +30,11 @@
 	(person-age pers)))
 
 (defclass marriage (item)
-  ((man			:accessor marriage-man :initform nil :initarg :man)
-   (wife		:accessor marriage-wife :initform nil :initarg :wife)
-   (surname		:accessor marriage-surname :initform nil :initarg :surname)
-   (photo		:accessor marriage-photo :initform nil :initarg :photo)
-   (children	:accessor marriage-children :initform nil :initarg :children)))
+  ((man			:accessor marriage-man :initform nil )
+   (wife		:accessor marriage-wife :initform nil )
+   (surname		:accessor marriage-surname :initform nil )
+   (photo		:accessor marriage-photo :initform nil )
+   (children	:accessor marriage-children :initform nil )))
 
 (defgeneric get-people (storage))
 (defgeneric get-weddings (storage))
@@ -46,7 +46,7 @@
 #(
 (defclass file-storage ()
   ((filename 
-	 :initarg :fname
+	 
 	 :accessor fname)))
 
 (defun generate-people (props)
@@ -76,21 +76,24 @@
 	(setf (slot-value db 'weddings)
 		  (mongo:collection base "weddings"))))
 
-;(print (macroexpand-1
+;(print (macroexpand-1 '
 (generate-methods person ('people database)
-				  (('date "date" :type integer) ('date-unknown "date-unknown")
+				  (('date "date" :type integer)
+				   ('date-unknown "date-unknown" :type boolean)
 				   ('photo "photo")
 				   ('name "name") ('middle-name "middle-name")
 				   ('surname "surname")
 				   ('sex "sex" :set (('male "male") ('female "female")))
-				   ('death-date "death-date")
-				   ('death-date-unknown "death-date-unknown")))
+				   ('death-date "death-date" :type integer)
+				   ('death-date-unknown "death-date-unknown"
+					:type boolean)))
 
 (generate-methods marriage ('weddings database)
-				  (('date "date" :type integer) ('date-unknown "date-unknown")
+				  (('date "date" :type integer)
+				   ('date-unknown "date-unknown" :type boolean)
 				   ('photo "photo") ('surname "surname")
-				   ('man "man") ('wife "wife")
-				   ('children "children")))
+				   ('man "man" :type integer) ('wife "wife" :type integer)
+				   ('children "children" :type list)))
 
 (defmethod get-people ((storage database))
   (load-all-instances 'person storage))

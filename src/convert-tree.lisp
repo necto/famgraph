@@ -81,7 +81,12 @@
 
 (defun fill-edges (nodes weddings)
   (labels ((get-node (id)
-		     (find-if #'(lambda (node) (equalp (id (node-data node)) id)) nodes))
+			 (let ((ret (find-if #'(lambda (node)
+									 (equalp (id (node-data node))
+											 id))
+								 nodes)))
+			   (assert ret (id) "wrong id")
+			   ret))
 		   (add-edge (start-id finish-id)
 			 (let ((start (get-node start-id))
 				   (finish (get-node finish-id)))

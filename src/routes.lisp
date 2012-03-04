@@ -26,7 +26,7 @@
       (t path))))
 
 (restas:define-route person-change-route ("person:(id)" :parse-vars (list :id #'parse-integer))
-	(person-change (get-person id *storage*) :new nil))
+	(person-change (get-person id *storage*)))
 
 (defun get-persons (list)
   (iter (for p in list)
@@ -38,8 +38,7 @@
   (let ((wedd (get-wedding id *storage*)))
 	(wedding-change wedd (get-person (marriage-man wedd) *storage*)
 						 (get-person (marriage-wife wedd) *storage*)
-						 (get-persons (marriage-children wedd))
-						 :new nil)))
+						 (get-persons (marriage-children wedd)))))
 
 (defun safe-parse-integer (str)
   (if (and str (not (equalp "" str)))
@@ -73,59 +72,24 @@
   (upload-finished (handle-file (post-param "file") '("image"))))
 
 (restas:define-route alter-pers ("alter-person" :method :post)
-  (let ((pers 
-			(make-instance 'person ;make-person 
-			  :id (safe-parse-integer (post-param "id"))
-			  :name (post-param "name")
-			  :middle-name (post-param "middle-name")
-			  :surname (post-param "surname")
-			  :sex (if (equalp "male" (post-param "sex"))
-					 'male
-					 'female)
-			  :date (safe-parse-integer (post-param "date"))
-			  :death-date (safe-parse-integer (post-param "death"))
-			  :date-unknown (not (null (post-param "date-unknown")))
-			  :death-date-unknown (not (null (post-param "death-unknown")))
-			  :photo (post-param "photo"))))
-	(alter-person pers *storage*)
-;	(if (post-param "new")
-;	  (insert-person pers *storage*)
-;	  (alter-person pers *storage*))
-	(refresh-tree)))
-
-(defun get-children-list (param)
-  (when (and param (not (string= "" param)))
-	(with-input-from-string (is (post-param "children"))
-	  (read is))))
+  (alter-person (init-from-alist 'person (hunchentoot:post-parameters*))
+				*storage*)
+	(refresh-tree))
 
 (restas:define-route alter-marr ("alter-marriage" :method :post)
-  (let ((wedd (make-instance 'marriage ;make-marriage
-				:id (safe-parse-integer (post-param "id"))
-				:man (safe-parse-integer (post-param "man"))
-				:wife (safe-parse-integer (post-param "wife"))
-				:surname (post-param "surname")
-				:photo (post-param "photo")
-				:date (post-param "date")
-				:date-unknown (post-param "date-unknown")
-				:children (get-children-list (post-param "children")))))
-	(alter-marriage wedd *storage*))
-;	(if (post-param "new")
-;	  (insert-marriage wedd *storage*)
-;	  (alter-marriage wedd *storage*)))
+  (alter-marriage (init-from-alist 'marriage (hunchentoot:post-parameters*))
+				  *storage*)
   (refresh-tree))
-	;(format nil "~a" wedd)))
-
-;(restas:define-route nooa ("impossible:(id)" :method :get))
 
 (restas:define-route get-card ("card:(id)" :method :get :content-type "image/svg+xml")
   (person-card (get-person (parse-integer id) *storage*)))
 
 (restas:define-route new-person ("new-person" :method :get)
-  (person-change (make-instance 'person))); (make-person :id (get-uniq-number *storage*)) :new t))
+  (person-change (make-instance 'person)))
 
 (restas:define-route new-wedding ("new-wedding" :method :get)
-  (wedding-change (make-instance 'marriage); (make-marriage :id (get-uniq-number *storage*))
-				  nil nil nil :new t))
+  (wedding-change (make-instance 'marriage)
+				  nil nil nil))
 
 (restas:define-route new-items ("new-items")
   (draw-new-items))
