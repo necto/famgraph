@@ -4,10 +4,10 @@
 				 #:percl)
 	:components ((:module "src"
 				  :components 
-				  ((:file "defmodule")
+				  ((:file "tree")
+				   (:file "arrange-tree" :depends-on ("tree"))
+				   (:file "defmodule" :depends-on ("tree"))
 				   (:file "database" :depends-on ("defmodule"))
-				   (:file "tree" :depends-on ( "defmodule"))
-				   (:file "arrange-tree" :depends-on ("tree" "defmodule"))
 				   (:file "convert-tree" :depends-on ("database" "tree" "arrange-tree" "defmodule"))
 				   (:file "presenter" :depends-on ("defmodule" "convert-tree"))
 				   (:file "routes" :depends-on ("presenter"))))))

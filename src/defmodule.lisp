@@ -1,7 +1,8 @@
 (restas:define-module #:kin-package
-   (:use #:cl #:iter )
-   (:import-from #:mongo-cl-driver.son-sugar son)
-   (:export ))
+   (:use #:cl #:iter #:tree)
+   (:export :compile-tmpl
+			:*storage*
+			:*now*)) ;...
 
 (in-package #:kin-package)
 

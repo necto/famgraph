@@ -1,4 +1,4 @@
-(in-package #:kin-package)
+(in-package #:tree)
 
 ;; Note b > a !!
 (defstruct (interval (:constructor make-int (a b))

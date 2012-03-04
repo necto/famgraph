@@ -1,4 +1,34 @@
-(in-package #:kin-package)
+
+(defpackage #:tree (:use #:cl #:iter)
+  (:export :node
+		   :arrange-nodes-tight
+		   :arrange-tree-broad
+		   :arrange-forest-broad
+		   :to-positives
+		   :move-tree
+
+		   :node
+		   :make-node
+		   :node-pos
+		   :node-right-down
+		   :node-size
+		   :node-preds
+		   :node-succs
+		   :node-marks
+		   :node-data
+
+		   :edge
+		   :build-edges
+		   :edge-start
+		   :edge-finish
+		   :edge-color
+
+		   :vec
+		   :vec-x
+		   :vec-y
+		   :make-vect))
+
+(in-package :tree)
 
 (defstruct (vec (:constructor make-vect (x y)))
   		   (x 0 :type integer)
