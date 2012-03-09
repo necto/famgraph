@@ -43,27 +43,6 @@
 (defgeneric alter-person (pers storage))
 (defgeneric alter-marriage (marr storage))
 
-#(
-(defclass file-storage ()
-  ((filename 
-	 
-	 :accessor fname)))
-
-(defun generate-people (props)
-  (mapcar #'(lambda (prop) (apply #'make-person prop)) props))
-
-(defun generate-marriages (props)
-  (mapcar #'(lambda (prop) (apply #'make-marriage prop)) props))
-
-(defmethod get-people ((storage file-storage))
-  (with-open-file (file (fname storage))
-	(generate-people (getf (eval (read file)) :people))))
-
-(defmethod get-weddings ((storage file-storage))
-  (with-open-file (file (fname storage))
-	(generate-marriages (getf (eval (read file)) :weddings))))
-)
-
 (defclass database (database-base)
   ((people :reader people)
    (weddings :reader weddings)))
@@ -76,11 +55,13 @@
 	(setf (slot-value db 'weddings)
 		  (mongo:collection base "weddings"))))
 
+(generate-class-methods item
+				  (('date "date" :type integer)
+				   ('date-unknown "date-unknown" :type boolean)))
+
 ;(print (macroexpand-1 '
 (generate-methods person ('people database)
-				  (('date "date" :type integer)
-				   ('date-unknown "date-unknown" :type boolean)
-				   ('photo "photo")
+				  (('photo "photo")
 				   ('name "name") ('middle-name "middle-name")
 				   ('surname "surname")
 				   ('sex "sex" :set (('male "male") ('female "female")))
@@ -89,9 +70,7 @@
 					:type boolean)))
 
 (generate-methods marriage ('weddings database)
-				  (('date "date" :type integer)
-				   ('date-unknown "date-unknown" :type boolean)
-				   ('photo "photo") ('surname "surname")
+				  (('photo "photo") ('surname "surname")
 				   ('man "man" :type integer) ('wife "wife" :type integer)
 				   ('children "children" :type list)))
 

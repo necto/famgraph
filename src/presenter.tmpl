@@ -38,7 +38,10 @@
 		<tspan
 			x="10"
 			y="86.362183"
-			id="tspan3771">{$birth} - {$death}</tspan>
+			id="tspan3771">{$birth} -
+				{if not $deathDateUnknown}
+					{$death}
+				{/if}</tspan>
 		{/if}
 	</text>
     <rect
@@ -411,7 +414,7 @@
 
 	  <label for="d-date">Год смерти:</label>
 	  <input type="text" name="{$names.deathDate}" id="d-date" value="{$death}"/>
-	  <input type="checkbox" name="{$names.deathUnknown}"
+	  <input type="checkbox" name="{$names.deathDateUnknown}"
 			 value="yes" id="dd-unkn"
 			 {if $deathDateUnknown}
 				checked="checked"
