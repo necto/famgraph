@@ -43,7 +43,7 @@
 (defgeneric alter-person (pers storage))
 (defgeneric alter-marriage (marr storage))
 
-(defclass database (database-base)
+(defclass database (mongo-db)
   ((people :reader people)
    (weddings :reader weddings)))
 
@@ -79,9 +79,9 @@
 (defmethod get-weddings ((storage database))
   (load-all-instances 'marriage storage))
 (defmethod get-person (id (storage database))
-  (load-inst 'person id storage))
+  (load-inst 'person storage :id id))
 (defmethod get-wedding (id (storage database))
-  (load-inst 'marriage id storage))
+  (load-inst 'marriage storage :id id))
 (defmethod alter-person (pers (storage database))
   (store-inst pers storage))
 (defmethod alter-marriage (marr (storage database))
