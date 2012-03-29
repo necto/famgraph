@@ -69,25 +69,25 @@
   (upload-finished (handle-file (post-param "file") '("image"))))
 
 (restas:define-route alter-pers ("alter-person" :method :post)
-  (alter-person (init-from-alist 'person (hunchentoot:post-parameters*))
-				*storage*)
-	(refresh-tree))
+  (let ((person (init-from-alist 'person (hunchentoot:post-parameters*))))
+    (alter-person person *storage*)
+    (refresh-tree (item-owner person))))
 
 (restas:define-route alter-marr ("alter-marriage" :method :post)
-  (alter-marriage (init-from-alist 'marriage (hunchentoot:post-parameters*))
-				  *storage*)
-  (refresh-tree))
+  (let ((marriage (init-from-alist 'marriage (hunchentoot:post-parameters*))))
+    (alter-marriage marriage *storage*)
+    (refresh-tree (item-owner marriage))))
 
 (restas:define-route get-card ("card:(id)" :method :get :content-type "image/svg+xml")
   (person-card (get-person (parse-integer id) *storage*)))
 
-(restas:define-route new-person ("new-person" :method :get)
-  (person-change (make-instance 'person)))
+(restas:define-route new-person ("new-person:(owner)" :method :get)
+  (person-change (make-instance 'person :owner owner)))
 
-(restas:define-route new-wedding ("new-wedding" :method :get)
-  (wedding-change (make-instance 'marriage) nil nil nil))
+(restas:define-route new-wedding ("new-wedding:(owner)" :method :get)
+  (wedding-change (make-instance 'marriage :owner owner) nil nil nil))
 
-(restas:define-route new-items ("new-items")
-  (draw-new-items))
+(restas:define-route new-items ("new-items:(owner)")
+  (draw-new-items owner))
 
 

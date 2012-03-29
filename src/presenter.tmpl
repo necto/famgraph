@@ -288,7 +288,7 @@
 				type="image/svg+xml"></object>
 		<iframe id="right-panel" frameborder=0
 				style="float:right;width:20%;height:85%"
-				src="new-items" > </iframe>
+				src="new-items{$owner}" > </iframe>
 		<p> copyright </p>
 
 	</body>
@@ -524,10 +524,10 @@
 <head>
 </head>
 <body>
-<div id="new-pers" onclick="window.location = 'new-person'">
+<div id="new-pers" onclick="window.location = 'new-person{$owner}'">
 	Добавить человека.
 </div>
-<div id="new-marr" onclick="location = 'new-wedding'">
+<div id="new-marr" onclick="location = 'new-wedding{$owner}'">
 	Объединить в семью.
 </div>
 </body>
@@ -544,7 +544,7 @@ parent.finishUpload("{$file}");
 {template refresh-tree}
 <script language="javascript" type="text/javascript">
 top.refreshTree();
-location="new-items";
+location="new-items{$owner}";
 </script> 
 {/template}
 

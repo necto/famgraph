@@ -119,8 +119,8 @@
 (defun upload-finished (file)
   (kin-templates:upload-finished `(:file ,file)))
 
-(defun refresh-tree ()
-  (kin-templates:refresh-tree))
+(defun refresh-tree (owner)
+  (kin-templates:refresh-tree `(:owner ,owner)))
 
 (defun refresh-node (pers)
   (kin-templates:refresh-node 
@@ -131,6 +131,6 @@
 (defun person-card (pers)
   (kin-templates:card (simple-graphic-person pers)))
 
-(defun draw-new-items ()
-  (kin-templates:new-items))
+(defun draw-new-items (owner)
+  (kin-templates:new-items `(:owner ,owner)))
 

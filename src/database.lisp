@@ -9,7 +9,7 @@
 (defclass item (identifable)
   ((date-unknown :initform nil :accessor item-date-unknown)
    (date :accessor item-date :initform nil )
-   (owner :accessor item-owner :initform nil)))
+   (owner :accessor item-owner :initform nil :initarg :owner)))
 
 (defclass person (item)
 	((name					:accessor p-name :initform nil )

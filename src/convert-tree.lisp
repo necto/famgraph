@@ -2,7 +2,8 @@
 (in-package #:kin-package)
 
 (defparameter *year-per-px* 0.08)
-(defparameter *start-year* 1750)
+(defparameter *convinience-indent* 10) ;years
+(defparameter *start-year* 1750)  ; TODO: auto select maximul item-date for *start-year*
 (defparameter *origin* (make-vect 40 0))
 
 (defparameter *p-size* (make-vect (+ 200 5) (+ 100 5)))
@@ -100,6 +101,11 @@
 		  (iter (for child in (m-children wed))
 				(add-edge (id wed) child)))))
 
+(defun calculate-start-year (nodes indent)
+  (- (iter (for n in nodes)
+		   (minimize (item-date (node-data n))))
+	 indent))
+
 #+nil(
 (defun compare-nodes (a b)
   (ctypecase a
@@ -135,6 +141,7 @@
 					   #'compare-nodes)))
 	  (fill-edges nodes weddings)
 	  (suggest-adges nodes)
+	  (setf *start-year* (calculate-start-year nodes *convinience-indent*))
 	  (arrange-vertically nodes)
 	  (sort nodes #'compare-nodes))))
 
@@ -151,5 +158,4 @@
 		(maximize (vec-x (node-right-down n)) into w)
 		(maximize (+ (vec-y (node-pos n)) (node-full-height n)) into h)
 		(finally (return (make-vect w h)))))
-
 
