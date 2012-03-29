@@ -26,6 +26,9 @@
       ((not (fad:file-exists-p path)) hunchentoot:+http-not-found+)
       (t path))))
 
+(restas:define-route empty-route-for-ph-upload ("photo-upl-empty")
+	"<h1> This is a stub page just for convenience of ajax photo uploader </h1>")
+
 (restas:define-route person-change-route ("person:(id)" :parse-vars (list :id #'parse-integer))
 	(person-change (get-person id *storage*)))
 
@@ -37,13 +40,9 @@
 (restas:define-route wedding-change-route
 					 ("wedding:(id)" :parse-vars (list :id #'parse-integer))
   (let ((wedd (get-wedding id *storage*)))
-	(wedding-change wedd (get-person (m-man wedd) *storage*)
-						 (get-person (m-wife wedd) *storage*)
+	(wedding-change wedd (if (m-man wedd) (get-person (m-man wedd) *storage*))
+						 (if (m-wife wedd) (get-person (m-wife wedd) *storage*))
 						 (get-persons (m-children wedd)))))
-
-(defun safe-parse-integer (str)
-  (if (and str (not (equalp "" str)))
-	(parse-integer str)))
 
 (defun gen-fname () (format nil "~a" (get-universal-time)))
 

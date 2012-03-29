@@ -8,7 +8,8 @@
 
 (defclass item (identifable)
   ((date-unknown :initform nil :accessor item-date-unknown)
-   (date :accessor item-date :initform nil )))
+   (date :accessor item-date :initform nil )
+   (owner :accessor item-owner :initform nil)))
 
 (defclass person (item)
 	((name					:accessor p-name :initform nil )
@@ -36,8 +37,8 @@
    (photo		:accessor m-photo :initform nil )
    (children	:accessor m-children :initform nil )))
 
-(defgeneric get-people (storage))
-(defgeneric get-weddings (storage))
+(defgeneric get-people (storage &key owner))
+(defgeneric get-weddings (storage &key owner))
 (defgeneric get-person (id storage))
 (defgeneric get-wedding (id storage))
 (defgeneric alter-person (pers storage))
@@ -57,7 +58,8 @@
 
 (generate-class-methods item
 				  (('date "date" :type integer)
-				   ('date-unknown "date-unknown" :type boolean)))
+				   ('date-unknown "date-unknown" :type boolean)
+				   ('owner "owner")))
 
 ;(print (macroexpand-1 '
 (generate-methods person ('people database)
@@ -74,10 +76,10 @@
 				   ('man "man" :type integer) ('wife "wife" :type integer)
 				   ('children "children" :type list)))
 
-(defmethod get-people ((storage database))
-  (load-all-instances 'person storage))
-(defmethod get-weddings ((storage database))
-  (load-all-instances 'marriage storage))
+(defmethod get-people ((storage database) &key owner)
+  (load-all-instances 'person storage :query (if owner `(owner ,owner))))
+(defmethod get-weddings ((storage database) &key owner)
+  (load-all-instances 'marriage storage :query (if owner `(owner ,owner))))
 (defmethod get-person (id (storage database))
   (load-inst 'person storage :id id))
 (defmethod get-wedding (id (storage database))

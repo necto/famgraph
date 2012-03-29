@@ -129,14 +129,14 @@
 		  (t (< date-a date-b)))))
 
 (defun build-tree ()
-  (let ((nodes (sort (init-tree
-								  (append (get-people *storage*)
-										  (get-weddings *storage*))); ))
-								#'compare-nodes)))
-	(fill-edges nodes (get-weddings *storage*))
-	(suggest-adges nodes)
-	(arrange-vertically nodes)
-	(sort nodes #'compare-nodes)))
+  (let ((people (get-people *storage* :owner "fat"))
+		(weddings (get-weddings *storage* :owner "fat")))
+	(let ((nodes (sort (init-tree (append people weddings)); ))
+					   #'compare-nodes)))
+	  (fill-edges nodes weddings)
+	  (suggest-adges nodes)
+	  (arrange-vertically nodes)
+	  (sort nodes #'compare-nodes))))
 
 (defun place-nodes (nodes &optional (origin *origin*))
 ;  (arrange-nodes-tight nodes)

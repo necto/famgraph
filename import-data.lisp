@@ -25,6 +25,7 @@
 						 "male"
 						 "female")
 				 doc)
+	(add-element "owner" "fat" doc)
 	(db.save "people" doc)))
 
 (defun get-oid (id)
@@ -48,6 +49,7 @@
 	(add-element "wife" (gethash (getf marr :wife) *id-mapping*) doc);(get-oid (getf marr :wife)) doc)
 	(add-element "children" (loop for child in (getf marr :children)
 								  collect (gethash child *id-mapping*)) doc)
+	(add-element "owner" "fat" doc)
 	(db.save "weddings" doc)))
 
 (defun set-counter (val)
