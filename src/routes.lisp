@@ -1,14 +1,14 @@
 
 (in-package #:kin-package)
 
-(restas:define-route main ("")
-  (get-page (search "Firefox" (hunchentoot:user-agent))))
+(restas:define-route main ("edit:(owner)")
+  (get-page owner (search "Firefox" (hunchentoot:user-agent))))
 
-(restas:define-route tree ("tree" :content-type "image/svg+xml")
-  (draw-tree))
+(restas:define-route tree ("tree:(owner)" :content-type "image/svg+xml")
+  (draw-tree :owner owner))
 
-(restas:define-route view-tree ("view-tree" :content-type "image/svg+xml")
-  (draw-view-tree))
+(restas:define-route view-tree ("view-tree:(owner)" :content-type "image/svg+xml")
+  (draw-view-tree owner))
 
 (defun parse-native-namestring (thing)
   #+sbcl (sb-ext:parse-native-namestring thing)

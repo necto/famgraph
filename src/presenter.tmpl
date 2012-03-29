@@ -279,9 +279,9 @@
 		</h1>
 		<object id="tree" data=
 				{if $agent == 'firefox'}
-					"tree"
+					"tree{$owner}"
 				{else}
-					"view-tree"
+					"view-tree{$owner}"
 				{/if}
 				class=""
 				style="float:left;overflow:scroll;height:85%;width:80%;"
@@ -381,6 +381,7 @@
 <form method="post" action="alter-person"
 	  enctype="multipart/form-data">
 	  <input type="hidden" name="{$names.id}" value="{$id}" />
+	  <input type="hidden" name="{$names.owner}" value="{$owner}" />
 
 	  <label for="name">Имя:</label>
 	  <input type="text" id="name" name="{$names.name}"
@@ -445,6 +446,7 @@
 <form method="post" action="alter-marriage"
 	  enctype="multipart/form-data">
 	  <input type="hidden" name="{$names.id}" value="{$id}" />
+	  <input type="hidden" name="{$names.owner}" value="{$owner}" />
 	  
 	  <label for="surname">Фамилия:</label>
 	  <input id="surname" type="text" id="surname"

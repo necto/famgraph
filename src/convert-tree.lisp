@@ -128,9 +128,9 @@
 		  ((null date-b) (not date-b))
 		  (t (< date-a date-b)))))
 
-(defun build-tree ()
-  (let ((people (get-people *storage* :owner "fat"))
-		(weddings (get-weddings *storage* :owner "fat")))
+(defun build-tree (owner)
+  (let ((people (get-people *storage* :owner owner))
+		(weddings (get-weddings *storage* :owner owner)))
 	(let ((nodes (sort (init-tree (append people weddings)); ))
 					   #'compare-nodes)))
 	  (fill-edges nodes weddings)

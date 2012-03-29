@@ -1,8 +1,9 @@
 (in-package #:kin-package)
 
 
-(defun get-page (is-firefox)
-  (kin-templates:tree-page `(:agent ,(if is-firefox
+(defun get-page (owner is-firefox)
+  (kin-templates:tree-page `(:owner ,owner
+							 :agent ,(if is-firefox
 									   "firefox"
 									   "other"))))
 
@@ -11,6 +12,7 @@
 
 (defun graphic-marriage (marr)
   `(:id ,(id marr)
+    :owner ,(item-owner marr)
 	:date ,(item-date marr)
 	:date-unknown ,(item-date-unknown marr)
 	:photo ,(if (m-photo marr)
@@ -20,6 +22,7 @@
 
 (defun graphic-person (pers)
   `(:id ,(id pers)
+    :owner ,(item-owner pers)
 	:name ,(p-name pers)
 	:middle-name ,(p-middle-name pers)
 	:surname ,(p-surname pers)
@@ -85,12 +88,18 @@
 							(vec-x size)))))
 
 
-(defun draw-tree ()
-  (kin-templates:tree (graphic-tree (place-nodes (build-tree)))))
+(defun draw-tree (&key owner)
+  (let ((tree (build-tree owner)))
+	(if tree
+      (kin-templates:tree (graphic-tree (place-nodes tree)))
+	  "<error> Sorry, tree wasn't found. Wrong owner possible. </error>")))
 
-(defun draw-view-tree ()
-  (kin-templates:view-tree 
-	`(:tree ,(graphic-tree (place-nodes (build-tree))))))
+(defun draw-view-tree (owner)
+  (let ((tree (build-tree owner)))
+	(if tree
+      (kin-templates:view-tree 
+        `(:tree ,(graphic-tree (place-nodes (build-tree owner)))))
+	  "<error> Sorry, tree wasn't found. Wrong owner possible. </error>")))
 
 (defun person-change (pers)
   (kin-templates:person-changer
