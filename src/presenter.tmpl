@@ -3,12 +3,12 @@
 {template card}
 {if not $bodyOnly}
 <svg {if $pos} x="{$pos.x}" y="{$pos.y}" {/if} id="card{$id}"
-{if $simple}
+ {if $simple}
      xmlns:xlink="http://www.w3.org/1999/xlink"
 	 width="200" height="100"
-{else}
+ {else}
 	 onclick="top.cardClicked({$id})"
-{/if}
+ {/if}
 	 >
 {/if}
     <rect
@@ -375,6 +375,7 @@
 {template person-changer}
 <html>
 <head>
+<link rel="stylesheet" href="file/style/person-changer.css"/>
 {call photo-upload-head /}
 </head>
 <body onload="ininini(evt)">
@@ -426,8 +427,9 @@
 		   src="file/image/{$photo}" id="preview"/>
 	  <input type="hidden" name="{$names.photo}"
 			 id="photo" value="{$photo}"/><br/>
-	  <input type="submit" value="Submit" />
+	  <input type="submit" value="Сохранить" class="btn" />
 </form>
+<a id="cancel" href="new-items{$owner}" class="btn"> Отменить </a>
 
 {call photo-upload-button/}
 </body>
@@ -439,6 +441,7 @@
 <hmtl>
 <head>
 <link rel="stylesheet" href="file/style/tree.css"/>
+<link rel="stylesheet" href="file/style/wedding-changer.css"/>
 {call photo-upload-head/}
 <script type="text/javascript" src="file/script/marr-form.js"> </script>
 </head>
@@ -457,12 +460,12 @@
 	  {if $man}
 	  	<div id="manAlloc">
 			{call card data="$man"/}
-			<div id="remMan" onClick="rem('man')"> remove </div>
-			<div id="chgMan" onClick="change('man', manAdd)"> change </div>
+			<div id="remMan" onClick="rem('man')" class="btn"> убрать </div>
+			<div id="chgMan" onClick="change('man', manAdd)" class="btn"> заменить </div>
 		</div>
 	  {else}
-	    <div id="manSet" onClick="parent.window.setDoWithCards(manAdd)">
-		    set man
+	    <div id="manSet" onClick="parent.window.setDoWithCards(manAdd)" class="btn">
+		    Указать отца.
 	   	</div>
 	  {/if}
 	  </div>
@@ -471,13 +474,13 @@
 	  {if $wife}
 	  	<div id="wifeAlloc">
 			{call card data="$wife"/}
-			<div id="remWife" onClick="rem('wife')"> remove </div>
-			<div id="chgWife" onClick="change('wife', wifeAdd)">
-			   	change </div>
+			<div id="remWife" onClick="rem('wife')" class="btn"> убрать </div>
+			<div id="chgWife" onClick="change('wife', wifeAdd)" class="btn">
+			   	заменить </div>
 		</div>
 	  {else}
-	    <div id="wifeSet" onClick="parent.window.setDoWithCards(wifeAdd)">
-			set wife
+	    <div id="wifeSet" onClick="parent.window.setDoWithCards(wifeAdd)" class="btn">
+			Указать жену.
 	   	</div>
 	  {/if}
 	  </div>
@@ -492,15 +495,15 @@
 						   {else}
 							 value="()"
 						   {/if} />
-	  <div id="addChld" onclick="parent.window.setDoWithCards(addChld)">
-		  add
+	  <div id="addChld" onclick="parent.window.setDoWithCards(addChld)" class="btn">
+		  Добавить дитя.
 	  </div>
 	  <div id="childs" >
 	  {foreach $child in $children}
 		<div id="chldAlloc{$child.id}">
 		{call card data="$child"/}
-		<div id="rem{$child.id}" onclick="removeChld({$child.id})" >
-		   	remove </div>
+		<div id="rem{$child.id}" onclick="removeChld({$child.id})" class="btn" >
+		   	убрать </div>
 		</div>
 	  {/foreach}
 	  </div>
@@ -512,8 +515,9 @@
 				checked="checked"
 			 {/if} /><label for="d-unkn">Точно не известен</label><br/>
 
-	  <input type="submit" value="Submit" />
+	  <input type="submit" value="Сохранить" class="btn"/>
 </form>
+<a id="cancel" href="new-items{$owner}" class="btn"> Отменить </a>
 {call photo-upload-button/}
 </body>
 </html>
@@ -522,12 +526,13 @@
 {template new-items}
 <html>
 <head>
+<link rel="stylesheet" href="file/style/nitems.css"/>
 </head>
 <body>
-<div id="new-pers" onclick="window.location = 'new-person{$owner}'">
+<div id="new-pers" onclick="window.location = 'new-person{$owner}'" class="btn">
 	Добавить человека.
 </div>
-<div id="new-marr" onclick="location = 'new-wedding{$owner}'">
+<div id="new-marr" onclick="location = 'new-wedding{$owner}'" class="btn">
 	Объединить в семью.
 </div>
 </body>

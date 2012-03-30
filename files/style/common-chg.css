@@ -1,0 +1,19 @@
+
+.btn
+{
+	border: 1px solid gray;
+	display:block;
+	font-weight:bold;
+	color:#FFFFFF;
+	background-color:#99ccaa;
+	width:120px;
+	text-align:center;
+	padding:4px;
+	text-decoration:none;
+}
+
+.btn:hover
+{
+	background-color:#7A991A;
+}
+
